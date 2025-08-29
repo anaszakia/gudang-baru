@@ -280,7 +280,7 @@
                         <td class="px-6 py-4 text-sm text-gray-900">{{ $index + 1 }}</td>
                         <td class="px-6 py-4 text-sm font-mono text-blue-600">{{ $detail->produk->kode }}</td>
                         <td class="px-6 py-4 text-sm text-gray-900">{{ $detail->produk->nama }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-600">{{ $detail->produk->kategori->nama_kategori }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-600">{{ $detail->produk->kategori->nama }}</td>
                         <td class="px-6 py-4 text-sm text-gray-900 text-right">{{ number_format($detail->jumlah, 0, ',', '.') }}</td>
                         <td class="px-6 py-4 text-sm text-gray-900 text-right">Rp {{ number_format($detail->harga, 0, ',', '.') }}</td>
                         <td class="px-6 py-4 text-sm font-medium text-gray-900 text-right">Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</td>

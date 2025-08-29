@@ -6,6 +6,7 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PengirimanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BarangMasukController;
@@ -77,6 +78,16 @@ Route::middleware(['auth', 'role:admin-super', 'log.sensitive'])
         Route::get('barang-keluar/{barangKeluar}/invoice', [BarangKeluarController::class, 'invoice'])->name('barang-keluar.invoice');
         Route::post('barang-keluar/export', [BarangKeluarController::class, 'exportExcel'])->name('barang-keluar.export-excel');
         
+        // Rute Pengiriman
+        Route::get('pengiriman', [PengirimanController::class, 'index'])->name('pengiriman.index');
+        Route::get('pengiriman/create/{barangKeluar}', [PengirimanController::class, 'create'])->name('pengiriman.create');
+        Route::post('pengiriman/store/{barangKeluar}', [PengirimanController::class, 'store'])->name('pengiriman.store');
+        Route::get('pengiriman/{pengiriman}', [PengirimanController::class, 'show'])->name('pengiriman.show');
+        Route::post('pengiriman/{pengiriman}/update-status', [PengirimanController::class, 'updateStatus'])->name('pengiriman.update-status');
+        Route::post('pengiriman/export', [PengirimanController::class, 'exportExcel'])->name('pengiriman.export-excel');
+        Route::get('pengiriman/{pengiriman}/print-label', [PengirimanController::class, 'printLabel'])->name('pengiriman.print-label');
+        Route::get('pengiriman/{pengiriman}/track', [PengirimanController::class, 'track'])->name('pengiriman.track');
+        
         // Penawaran routes for admin approval
         Route::get('penawaran', [AdminPenawaranController::class, 'index'])->name('penawaran.index');
         Route::get('penawaran/{penawaran}', [AdminPenawaranController::class, 'show'])->name('penawaran.show');
@@ -115,6 +126,16 @@ Route::middleware(['auth', 'role:admin-gudang', 'log.sensitive'])
         Route::get('barang-keluar/{barangKeluar}/finalize', [BarangKeluarController::class, 'finalize'])->name('barang-keluar.finalize');
         Route::get('barang-keluar/{barangKeluar}/invoice', [BarangKeluarController::class, 'invoice'])->name('barang-keluar.invoice');
         Route::post('barang-keluar/export', [BarangKeluarController::class, 'exportExcel'])->name('barang-keluar.export-excel');
+        
+        // Rute Pengiriman
+        Route::get('pengiriman', [PengirimanController::class, 'index'])->name('pengiriman.index');
+        Route::get('pengiriman/create/{barangKeluar}', [PengirimanController::class, 'create'])->name('pengiriman.create');
+        Route::post('pengiriman/store/{barangKeluar}', [PengirimanController::class, 'store'])->name('pengiriman.store');
+        Route::get('pengiriman/{pengiriman}', [PengirimanController::class, 'show'])->name('pengiriman.show');
+        Route::post('pengiriman/{pengiriman}/update-status', [PengirimanController::class, 'updateStatus'])->name('pengiriman.update-status');
+        Route::post('pengiriman/export', [PengirimanController::class, 'exportExcel'])->name('pengiriman.export-excel');
+        Route::get('pengiriman/{pengiriman}/print-label', [PengirimanController::class, 'printLabel'])->name('pengiriman.print-label');
+        Route::get('pengiriman/{pengiriman}/track', [PengirimanController::class, 'track'])->name('pengiriman.track');
         
         // Penawaran routes for admin-gudang approval
         Route::get('penawaran', [AdminPenawaranController::class, 'index'])->name('penawaran.index');
@@ -160,7 +181,17 @@ Route::middleware(['auth', 'role:driver', 'log.sensitive'])
     ->name('driver.')
     ->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'driverDashboard'])->name('dashboard');
-        // Add other driver routes here as needed
+        
+        // Driver delivery routes
+        Route::get('/deliveries', [PengirimanController::class, 'driverDeliveries'])->name('deliveries');
+        Route::get('/deliveries/{pengiriman}', [PengirimanController::class, 'driverDeliveryDetail'])->name('deliveries.detail');
+        Route::post('/deliveries/{pengiriman}/update-status', [PengirimanController::class, 'driverUpdateStatus'])->name('deliveries.update-status');
+        
+        // New routes for driver
+        Route::get('/deliveries/{pengiriman}/accept', [PengirimanController::class, 'driverAcceptDelivery'])->name('deliveries.accept');
+        Route::post('/deliveries/{pengiriman}/accept-confirm', [PengirimanController::class, 'driverAcceptDeliveryConfirm'])->name('deliveries.accept-confirm');
+        Route::get('/deliveries/{pengiriman}/print-note', [PengirimanController::class, 'driverPrintSuratJalan'])->name('deliveries.print-note');
+        Route::get('/deliveries/{pengiriman}/update-form', [PengirimanController::class, 'driverDeliveryDetail'])->name('deliveries.update-form');
     });
 
 Route::redirect('/', '/login');

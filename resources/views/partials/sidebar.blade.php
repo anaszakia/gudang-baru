@@ -150,17 +150,48 @@
                     </a>
                 </li>
                 
-                <li>
+                {{-- <li>
                     <a href="{{ route('sales.penawaran.create') }}" class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
                         <i class="fas fa-plus-circle w-5 h-5 mr-3 text-gray-500 group-hover:text-blue-500"></i>
                         <span class="sidebar-text">Buat Penawaran</span>
                     </a>
-                </li>
+                </li> --}}
                 
                 <li>
                     <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
                         <i class="fas fa-chart-line w-5 h-5 mr-3 text-gray-500 group-hover:text-blue-500"></i>
                         <span class="sidebar-text">Laporan Penjualan</span>
+                    </a>
+                </li>
+            @endif
+            
+            <!-- Menu khusus Driver -->
+            @if(auth()->user()->role === 'driver')
+                <li>
+                    <a href="{{ route('driver.deliveries') }}" class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
+                        <i class="fas fa-truck w-5 h-5 mr-3 text-gray-500 group-hover:text-blue-500"></i>
+                        <span class="sidebar-text">Pengiriman Saya</span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="{{ route('driver.deliveries') }}?status=belum_dikirim" class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
+                        <i class="fas fa-clipboard-list w-5 h-5 mr-3 text-gray-500 group-hover:text-blue-500"></i>
+                        <span class="sidebar-text">Order Baru</span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="{{ route('driver.deliveries') }}?status=dalam_perjalanan" class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
+                        <i class="fas fa-route w-5 h-5 mr-3 text-gray-500 group-hover:text-blue-500"></i>
+                        <span class="sidebar-text">Dalam Perjalanan</span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="{{ route('driver.deliveries') }}?status=selesai" class="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
+                        <i class="fas fa-check-circle w-5 h-5 mr-3 text-gray-500 group-hover:text-blue-500"></i>
+                        <span class="sidebar-text">Pengiriman Selesai</span>
                     </a>
                 </li>
             @endif

@@ -63,4 +63,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(Penawaran::class, 'approved_by');
     }
+    
+    /**
+     * Get all pengiriman assigned to this driver
+     */
+    public function pengirimanList()
+    {
+        return $this->hasMany(Pengiriman::class, 'driver_id');
+    }
+    
+    /**
+     * Get active pengiriman for this driver (not completed)
+     */
+    public function pengirimanAktif()
+    {
+        return $this->hasMany(Pengiriman::class, 'driver_id')
+            ->where('status_pengiriman', '!=', 'selesai');
+    }
 }

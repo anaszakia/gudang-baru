@@ -66,7 +66,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Total Produk</p>
-                    <p class="text-2xl font-bold text-gray-900 mt-1">{{ $totalProduk ?? 0 }}</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1">{{ $totalProducts ?? 0 }}</p>
                     <div class="flex items-center mt-2">
                         <span class="text-sm text-gray-500">Dalam gudang</span>
                     </div>
@@ -149,7 +149,7 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($recentBarangKeluar ?? [] as $bk)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">{{ $bk->nomor_transaksi }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">{{ $bk->kode_barang_keluar }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $bk->penerima }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ \Carbon\Carbon::parse($bk->tanggal_keluar)->format('d M Y') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp {{ number_format($bk->detailBarangKeluars->sum('subtotal'), 0, ',', '.') }}</td>

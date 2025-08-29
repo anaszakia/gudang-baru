@@ -231,8 +231,8 @@ class BarangKeluarController extends Controller
             
             $routePrefix = $this->getRoutePrefix($request);
             
-            return redirect()->route($routePrefix . '.barang-keluar.invoice', $barangKeluar->id)
-                ->with('success', 'Transaksi barang keluar berhasil diselesaikan dan stok telah diperbarui.');
+            return redirect()->route($routePrefix . '.pengiriman.create', $barangKeluar->id)
+                ->with('success', 'Transaksi barang keluar berhasil diselesaikan. Silakan pilih metode pengiriman.');
         } catch (\Exception $e) {
             DB::rollback();
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());

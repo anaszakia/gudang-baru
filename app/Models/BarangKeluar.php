@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\DetailBarangKeluar;
-use App\Models\Penawaran;
 use App\Models\User;
+use App\Models\Penawaran;
+use App\Models\Pengiriman;
+use App\Models\DetailBarangKeluar;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -59,5 +60,13 @@ class BarangKeluar extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    /**
+     * Get the pengiriman associated with this barang keluar
+     */
+    public function pengiriman()
+    {
+        return $this->hasOne(Pengiriman::class);
     }
 }

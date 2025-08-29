@@ -3,11 +3,13 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
-    <!-- Welcome Section -->
-    <div class="mb-8">
-        <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-6 text-white">
-            <h1 class="text-2xl font-bold mb-2">Selamat Datang, {{ auth()->user()->name }}!</h1>
-            <p class="text-blue-100">Kelola sistem dengan mudah melalui dashboard admin</p>
+    <!-- Welcome Banner -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Selamat Datang, {{ auth()->user()->name }}</h1>
+                <p class="text-gray-600 mt-1">Dashboard Admin Super | {{ now()->format('d F Y') }}</p>
+            </div>
         </div>
     </div>
 
@@ -34,7 +36,7 @@
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-600">Total Admin</p>
+                    <p class="text-sm font-medium text-gray-600">Total Admin Super</p>
                     <p class="text-2xl font-bold text-gray-900 mt-1">{{ number_format($totalAdmins) }}</p>
                     <div class="flex items-center mt-2">
                         <span class="text-sm text-blue-600 font-medium">{{ number_format($totalRegularUsers) }}</span>
@@ -86,7 +88,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <!-- User Growth Chart -->
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-            <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-between mb-6">
                 <h3 class="text-lg font-semibold text-gray-900">Pertumbuhan User</h3>
                 <div class="text-sm text-gray-500">7 Bulan Terakhir</div>
             </div>
@@ -97,7 +99,7 @@
 
         <!-- Login Statistics -->
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-            <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-between mb-6">
                 <h3 class="text-lg font-semibold text-gray-900">Statistik Login</h3>
                 <div class="text-sm text-gray-500">7 Hari Terakhir</div>
             </div>
@@ -106,26 +108,27 @@
             </div>
         </div>
     </div>
+
     <!-- Data Tables Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Recent Users -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200">
             <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-gray-900">User Terbaru</h3>
-                <a href="{{ route('admin-super.users.index') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">Lihat Semua</a>
+                <a href="{{ route('admin-super.users.index') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-200">Lihat Semua</a>
             </div>
             <div class="p-6">
-                <div class="space-y-4">
+                <div class="space-y-3">
                     @forelse($recentUsers as $user)
-                    <div class="flex items-center space-x-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <span class="text-blue-600 font-semibold">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                    <div class="flex items-center space-x-4 p-3 hover:bg-gray-50 rounded-lg transition-colors duration-200">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <span class="text-blue-600 font-semibold text-sm">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-gray-900 truncate">{{ $user->name }}</p>
                             <p class="text-sm text-gray-500 truncate">{{ $user->email }}</p>
                         </div>
-                        <div class="text-right">
+                        <div class="text-right flex-shrink-0">
                             <span class="inline-flex px-2 py-1 text-xs font-medium rounded-full 
                                 {{ $user->role === 'admin' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
                                 {{ ucfirst($user->role) }}
@@ -134,8 +137,8 @@
                         </div>
                     </div>
                     @empty
-                    <div class="text-center py-8">
-                        <i class="fas fa-users text-gray-300 text-3xl mb-3"></i>
+                    <div class="text-center py-12">
+                        <i class="fas fa-users text-gray-300 text-4xl mb-4"></i>
                         <p class="text-gray-500">Belum ada user terbaru</p>
                     </div>
                     @endforelse
@@ -147,13 +150,13 @@
         <div class="bg-white rounded-xl shadow-sm border border-gray-200">
             <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h3>
-                <a href="{{ route('admin-super.audit.index') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">Lihat Semua</a>
+                <a href="{{ route('admin-super.audit.index') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-200">Lihat Semua</a>
             </div>
             <div class="p-6">
-                <div class="space-y-4">
+                <div class="space-y-3">
                     @forelse($recentActivity as $activity)
-                    <div class="flex items-start space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                        <div class="w-8 h-8 rounded-full flex items-center justify-center
+                    <div class="flex items-start space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors duration-200">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5
                             @if($activity->action === 'Login') bg-green-100 @elseif($activity->action === 'Logout') bg-red-100 @else bg-blue-100 @endif">
                             @if($activity->action === 'Login')
                                 <i class="fas fa-sign-in-alt text-green-600 text-xs"></i>
@@ -167,13 +170,13 @@
                             <p class="text-sm font-medium text-gray-900">
                                 {{ $activity->user ? $activity->user->name : 'Unknown User' }}
                             </p>
-                            <p class="text-sm text-gray-600">{{ $activity->action }}</p>
+                            <p class="text-sm text-gray-600 mt-0.5">{{ $activity->action }}</p>
                             <p class="text-xs text-gray-500 mt-1">{{ $activity->created_at->diffForHumans() }}</p>
                         </div>
                     </div>
                     @empty
-                    <div class="text-center py-8">
-                        <i class="fas fa-history text-gray-300 text-3xl mb-3"></i>
+                    <div class="text-center py-12">
+                        <i class="fas fa-history text-gray-300 text-4xl mb-4"></i>
                         <p class="text-gray-500">Belum ada aktivitas</p>
                     </div>
                     @endforelse

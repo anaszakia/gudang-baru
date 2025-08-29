@@ -20,6 +20,10 @@ class DashboardController extends Controller
         $data = [
             'user' => $user,
             'totalProducts' => \App\Models\Produk::count(),
+            'totalBarangMasuk' => \App\Models\BarangMasuk::count(),
+            // 'persenBarangMasuk' => '+5.4%',
+            'totalBarangKeluar' => \App\Models\BarangKeluar::count(),
+            // 'persenBarangKeluar' => '+3.1%',
             'lowStockProducts' => \App\Models\Produk::where('stok', '<', 10)->count(),
             'totalTransactions' => \App\Models\BarangMasuk::count() + \App\Models\BarangKeluar::count(),
             'recentBarangMasuk' => \App\Models\BarangMasuk::latest()->take(5)->get(),
@@ -173,18 +177,47 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
         
+        // Count total deliveries assigned to this driver
+        $totalPengiriman = \App\Models\Pengiriman::where('driver_id', $user->id)->count();
+        
+        // Count active deliveries (not completed)
+        $aktivePengiriman = \App\Models\Pengiriman::where('driver_id', $user->id)
+            ->where('status_pengiriman', '!=', 'selesai')
+            ->count();
+            
+        // Count completed deliveries
+        $selesaiPengiriman = \App\Models\Pengiriman::where('driver_id', $user->id)
+            ->where('status_pengiriman', 'selesai')
+            ->count();
+            
+        // Get active deliveries list
+        $pengirimanAktifList = \App\Models\Pengiriman::where('driver_id', $user->id)
+            ->with('barangKeluar')
+            ->where('status_pengiriman', '!=', 'selesai')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+            
+        // Calculate completion rate
+        $completionRate = $totalPengiriman > 0 
+            ? round(($selesaiPengiriman / $totalPengiriman) * 100, 1) . '%' 
+            : '0%';
+        
         // Data untuk driver dashboard
         $data = [
             'user' => $user,
-            'deliveriesToday' => 8, // Placeholder data - replace with actual calculation
-            'completedToday' => 5,
-            'totalDeliveries' => 128,
-            'completionRate' => '96.5%',
-            'totalDistance' => 842,
-            'fuelConsumption' => 105,
-            'fuelEfficiency' => '8.0 km/L',
-            'todayDeliveries' => collect([]), // Replace with actual data
-            'recentDeliveries' => collect([]), // Replace with actual data
+            'deliveriesToday' => \App\Models\Pengiriman::where('driver_id', $user->id)
+                ->whereDate('created_at', today())
+                ->count(),
+            'completedToday' => \App\Models\Pengiriman::where('driver_id', $user->id)
+                ->where('status_pengiriman', 'selesai')
+                ->whereDate('waktu_selesai', today())
+                ->count(),
+            'totalPengiriman' => $totalPengiriman,
+            'aktivePengiriman' => $aktivePengiriman,
+            'selesaiPengiriman' => $selesaiPengiriman,
+            'completionRate' => $completionRate,
+            'pengirimanAktifList' => $pengirimanAktifList,
         ];
         
         return view('driver.dashboard', $data);
@@ -194,8 +227,8 @@ class DashboardController extends Controller
     {
         // Data untuk admin dashboard
         $data = [
-            'totalUsers' => User::count(),
-            'totalAdmins' => User::where('role', 'admin')->count(),
+            'totalUsers' => User::whereIn('role', ['admin-gudang', 'driver', 'sales', 'supervisor'])->count(),
+            'totalAdmins' => User::where('role', 'admin-super')->count(),
             'totalRegularUsers' => User::where('role', 'user')->count(),
             'todayRegistrations' => User::whereDate('created_at', today())->count(),
             'thisWeekRegistrations' => User::whereBetween('created_at', [
